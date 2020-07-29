@@ -14,7 +14,14 @@ const connect = function() {
   //event handler for incoming data
   conn.on('data', (data) => {
     console.log(data);
-  })
+  });
+
+  conn.on('connect', (data) => {
+    console.log('Connection to the game server successful!');
+    conn.write('Name: CAG');
+  });
+
+  
 
   return conn;
 };
