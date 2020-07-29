@@ -1,17 +1,20 @@
 const readline = require('readline');
+
+//Store the active TCP connection object
+let connection;
 /**
  * Setup User Interface 
  * Specifically, so that we can handle user input via stdin
  */
-const setupInput = function() {
+const setupInput = function(conn) {
+  connection = conn;
   const stdin = process.stdin;
   readline.emitKeypressEvents(stdin); //this, to emit the key events
   stdin.setRawMode(true);
   stdin.setEncoding('utf8');
   stdin.resume();
 
-  //ask about this tomorrow. Im not registering it as "data".
-  stdin.on('keypress', (str, key) => handleUserInput(key) );
+  stdin.on('keypress', (str, key) => handleUserInput(key));
 
   return stdin;
 };
@@ -20,20 +23,36 @@ const handleUserInput = function(data) {
   if (data && data.ctrl && data.name === 'c') process.exit();
   switch(data.name) {
     case 'a':
-      console.log(data.name);
-      return "Move: left";
+      connection.write("Move: left");
+      break;
     case 's':
-      console.log(data.name);
-      return 'Move: down';
+      connection.write('Move: down');
+      break;
     case 'd':
-      console.log(data.name);
-      return "Move: right";
+      connection.write("Move: right");
+      break;
     case 'w':
-      console.log(data.name);
-      return "Move: up";
+      connection.write("Move: up");
+      break;
+    case 'l': 
+      connection.write("Say: OMG");
+      break;
+    case 'k': 
+      connection.write("Say: STAHHHP");
+      break;
+    case 'j':
+      connection.write('Say: k byeeee');
+      break;
+    case 'i':
+      connection.write('Say: hey gurl heyyy');
+      break;
+    case 'm':
+      connection.write('Say: bigboiii');
+      break;
+    case 'p':
+      connection.write('Say: u ded!')
   }
 };
-
 
 module.exports = {
   setupInput
